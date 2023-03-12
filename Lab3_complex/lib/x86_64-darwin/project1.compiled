@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/local/bin/fpc" Date="1621181457"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -gw -gl -k-framework -kCocoa -l -vewnhibq &quot;-Fi/Users/ufid/Lazarus Projects/Lab3_complex/lib/x86_64-darwin&quot; -Fu/Users/ufid/.lazarus/lib/units/x86_64-darwin/cocoa -Fu/Applications/Lazarus/lcl/units/x86_64-darwin -Fu/Applications/Lazarus/components/freetype/lib/x86_64-darwin -Fu/Applications/Lazarus/components/lazutils/lib/x86_64-darwin -Fu/Applications/Lazarus/packager/units/x86_64-darwin &quot;-Fu/Users/ufid/Lazarus Projects/Lab3_complex/&quot; &quot;-FU/Users/ufid/Lazarus Projects/Lab3_complex/lib/x86_64-darwin/&quot; &quot;-FE/Users/ufid/Lazarus Projects/Lab3_complex/&quot; &quot;-o/Users/ufid/Lazarus Projects/Lab3_complex/project1&quot; -dLCL -dLCLcocoa project1.lpr"/>
+</CONFIG>

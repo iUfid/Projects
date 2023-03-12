@@ -1,0 +1,72 @@
+object Form1: TForm1
+  Left = 302
+  Height = 552
+  Top = 134
+  Width = 691
+  Caption = 'Матрицы'
+  ClientHeight = 552
+  ClientWidth = 691
+  Font.CharSet = ANSI_CHARSET
+  Font.Height = -13
+  Font.Name = '.SF NS'
+  LCLVersion = '2.2.4.0'
+  object Memo1: TMemo
+    Left = 48
+    Height = 200
+    Top = 24
+    Width = 272
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Courier New'
+    ParentFont = False
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+  end
+  object Memo2: TMemo
+    Left = 48
+    Height = 200
+    Top = 264
+    Width = 272
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'PT Mono'
+    ParentFont = False
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 376
+    Height = 25
+    Top = 24
+    Width = 176
+    Caption = 'Отображение матрицы'
+    OnClick = Button1Click
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 376
+    Height = 24
+    Top = 80
+    Width = 176
+    Caption = 'Обработка'
+    OnClick = Button2Click
+    TabOrder = 3
+  end
+  object Button3: TButton
+    Left = 376
+    Height = 32
+    Top = 136
+    Width = 176
+    Caption = 'Очистка'
+    OnClick = Button3Click
+    TabOrder = 4
+  end
+  object Button4: TButton
+    Left = 376
+    Height = 25
+    Top = 199
+    Width = 176
+    Caption = 'Закрыть'
+    OnClick = Button4Click
+    TabOrder = 5
+  end
+end
