@@ -1,0 +1,69 @@
+object Form1: TForm1
+  Left = 302
+  Height = 672
+  Top = 134
+  Width = 768
+  Caption = 'Матрицы'
+  ClientHeight = 672
+  ClientWidth = 768
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object StringGrid1: TStringGrid
+    Left = 16
+    Height = 184
+    Top = 8
+    Width = 520
+    ColCount = 8
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = '.SF NS'
+    ParentFont = False
+    RowCount = 8
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 552
+    Height = 25
+    Top = 8
+    Width = 176
+    Caption = 'Заполнение матрицы'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 552
+    Height = 25
+    Top = 64
+    Width = 176
+    Caption = 'Обработка'
+    OnClick = Button2Click
+    TabOrder = 2
+  end
+  object Button3: TButton
+    Left = 552
+    Height = 25
+    Top = 112
+    Width = 176
+    Caption = 'Очистка'
+    OnClick = Button3Click
+    TabOrder = 3
+  end
+  object Button4: TButton
+    Left = 552
+    Height = 25
+    Top = 167
+    Width = 176
+    Caption = 'Закрыть'
+    OnClick = Button4Click
+    TabOrder = 4
+  end
+  object StringGrid2: TStringGrid
+    Left = 16
+    Height = 184
+    Top = 216
+    Width = 520
+    ColCount = 8
+    RowCount = 8
+    TabOrder = 5
+  end
+end
