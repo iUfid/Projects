@@ -1,0 +1,228 @@
+Компонент TStringGrid - таблица строк
+Распологается на соседней вкладке - Additional
+автоматическое выставление полос прокрутки
+
+Свойства:
+
+Количество строк и столбцов:
+1. RowCount
+2. ColCount
+
+Слева и сверху фиксированные ячейки, которые не изменяются:
+Свойства FixedRows и FixedCols - фикс. кол-во строк и столбцов
+
+Свойство Options:
+По типу является множеством
+Можно включать значения на этапе создания проекта - нажать True
+Свойства:
+goEditing - таблица строк изначально закрыта для редактирования, если дать True, то откроется
+goAutoAddRows - автоматическое увеличение количества строк
+
+На этапе выполнения приложения:
+StringGrid1.Options := StringGrid1.Options + [goEditing, goAutoAddRows];
+
+Доступ к нужной строке и ячейке:
+Cells[<№ столбца>, <№ строки>]
+
+Помнить:
+1. Инвертированная индексация
+2. Адекватная индексация (от 0 до len-1)
+3. Ввод и вывод числовых данных проходит в строковом типе
+
+
+Пример:
+Табулирование функции - вывести на экран таблицу f(x)
+
+
+
+TEdit1 - x.нач
+TEdit2 - x.кон
+TEdit3 - dx
+TEdit4 - Вычислить
+
+Обработчик формы:
+procedure TForm1.FormCreate() - выполняется только один раз, при трансформации формы в окно приложения
+begin
+    With StringGrid1 do begin
+        ColCount := 2; - две колонки
+        FixedRows := 1; - кол-во фикс. строк
+        FixedCols := 0; - кол-во фикс. колонок
+        Cells[0,0] := 'x';
+        Cells[1,0] := 'y';
+    end;
+end;
+
+procedure TForm1.Button1.Click() - нажатие Вычисление
+var xn, xk, dx, x, y: real;
+    i, n: integer;
+    s1, s2: string;
+
+begin
+    xn := strtofloat(Edit1.Text);
+    xk := strtofloat(Edit2.Text);
+    dx := strtofloat(Edit3.Text);
+    n := (trunc(xn - xn) / dx) + 1;
+    StringGrid1.RowCount := n + 1;
+    for i := 1 to n do begin
+        x := xn + (i-1) / dx;
+        y := f(x);
+        str(x:4:1, s1);
+        str(y:5:3, s2);
+        StringGrid1.Cells[0, i] := s1;
+        StringGrid2.Cells[1, i] := s2;
+    end;
+end;
+
+
+
+
+Обработка текстовых файлов.
+
+var f: TestFile;
+begin
+    assignfile(f, <имя файла>);
+    reset(f); - чтение
+    rewrite(f); - запись с нуля
+    append(f); - для записи в конец файла (добавление)
+
+    Чтение:
+    read(f, <список ввода>);
+    readln(f, <список вывода>);
+
+    Запись:
+    write(f, <список вывода>):
+    writeln(f, <список ввода>);
+
+    eol(f), seekeol(f); - 
+    eof(f), seekeof(f); -
+
+
+    closefile(f);
+
+    fileExists(<имя файла>); - проверка на существование файла
+    rename(f, <новое имя>);
+    erase(f); - удаляет только закрытые файлы
+
+end;
+
+    ------------------------------------------------------------------
+
+    Многострочный редактор Memo:
+    Memo1.Lines.LoadFromFile(<имя файла>);
+    Memo1.Lines.SaveToFile(<имя файла>);
+    Считывание всего файла, либо запись всего Memo в файл - ПОЛНОСТЬЮ
+
+procedure TForm1.btnOpen.Click();
+var nf: string;
+begin
+    nf := inputBox('Открытие файла', 'Введите имя файла', '');
+    if not fileExists(nf) then
+        MessageDlg('Файл ' + nf + ' не найден',
+        mtError, [mbok], 0);
+    else
+        Memo1.Lines.LoadFromFile(nf);
+
+    То же самое с записью, нужно проверить, если ли файл с названием nf
+
+end;
+
+
+Стандартные диалоги
+Dialogs
+
+TOpenDialog - 'открытие'
+TSaveDialog - 'сохранение'
+
+Это выбор имени файла
+
+
+Свойство FileName
+         InitialDir
+
+Метод Execute - type = bool: true если диалог завершился успешно
+
+procedure TForm1.btnOpenClick();
+begin
+    if OpenDialog1.Execute then
+        Memo1.Lines.LoadFromFile(OpenDialog1.Filename);
+
+end;
+
+
+
+
+
+Создание текстового редактора
+
+1. Макет формы
+   Memo1
+   OpenDialog1
+   SaveDialog1
+   MainMenu1
+
+2. Создание главного меню приложения
+   Редактор меню
+   MenuItem<n> - в Caption добавить файл
+   Далее вызвать контекстное меню (пкм):
+   Вставить перед ним, вставить после, удалить и создать под меню
+   Выбираем последнее:
+
+   Создать
+   Открыть
+   Закрыть
+   Сохранить
+   Сохранить как
+   Выход
+
+   Затем вставить после:
+   Обработка:
+   Обработка1 и Обработка2
+
+3. Обработчики
+   Описание глобальных переменных
+   В модуле:
+   var sf: string;
+
+   procedure TForm1.FormCreate();
+   begin
+       sf := '';
+       Memo1.Clear;
+       Memo1.Modified := false;
+       Memo1.Align := alCloent;
+       Memo1.Font.Name := 'CourierNew';
+       OpenDialog1.InitialDir := <имя каталога, которое будет открываться>;
+       SaveDialog1.InitialDir := <имя каталога, которое будет открываться>;
+
+   end;
+
+   Сохранить как:
+   procedure TFome1.MenuItem6.Click();
+   begin
+       if SaveDialog1.Execute then begin
+           sf := SaveDialog1.FileName;
+           Memo1.Lines.SaveToFile(sf);
+           Memo1.Modified := false;
+           Form1.Caption := 'Form1' + sf;
+       end;
+   end;
+
+   procedure TForm1.MenuItem3.Click();
+   begin
+       if Memo1.Modified then begin
+           
+
+// ДОПИСАТЬ (мне впадлу)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

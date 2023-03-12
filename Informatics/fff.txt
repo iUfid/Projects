@@ -1,0 +1,130 @@
+unit Unit1;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+
+type
+
+  { TForm1 }
+
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Edit1: TEdit;
+    Label1: TLabel;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+
+  public
+
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.lfm}
+
+{ TForm1 }
+
+type
+  arr = array[1..50] of integer;
+
+var
+  a: arr;
+  n: integer;
+
+procedure ArrayRandomInput(var ar: arr; len: integer);
+var
+  i: integer;
+begin
+  for i := 1 to len do begin
+    ar[i] := random(100);
+  end;
+end;
+
+function ReverseNumber(x: integer): string;
+var
+  number, s: string;
+  len, i: integer;
+begin
+  {sum := 0;
+  tmp := x;
+  while tmp > 0 do begin
+    p := tmp mod 10;
+    sum := sum*10 + p;
+    tmp := tmp div 10;
+  end;}
+
+
+  {for i := 0 to (len div 2)-1 do begin
+    elem := number[i];
+    number[i] := number[len-1-i];
+    number[len-1-i] := elem;
+  end;}
+
+  s := inttostr(x);
+  len := length(s);
+  number := '';
+  for i := len downto 0 do begin
+    number := number + s[i];
+  end;
+
+  ReverseNumber := number;
+
+end;
+
+{procedure ArrayOutput(a: arr; n: integer);
+var
+  i: integer;
+begin
+  for i := 1 to n do begin
+
+  end;
+end;}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  i: integer;
+begin
+  if Edit1.Text = '' then begin
+    ShowMessage('Не заполнено поле');
+  end;
+
+  n := strtoint(Edit1.Text);
+  ArrayRandomInput(a, n);
+
+  for i := 1 to n do begin
+    Memo1.Lines.Add(inttostr(a[i]));
+  end;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  i: integer;
+begin
+  for i := 1 to n do begin
+    Memo1.Lines[i-1] := Memo1.Lines[i-1] + '     ' + ReverseNumber(a[i]);
+  end;
+
+end;
+
+end.
+
+
+
+
+
+
+
+
+
+

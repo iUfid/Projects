@@ -1,0 +1,210 @@
+Семинар 22.02.2023
+Типы компонентов в приложении:
+
+1. TLabel
+   Свойство (поле) Caption - надпись, которая выводится на форму.
+   WordWrap (не уверен что праивльно написал) - перенос слов -> перенос слов в компоненте.
+
+2. TEdit
+   Свойство Text - строка в Edit (поле ввода).
+   Однострочный редактор, поэтому нет реакции на Enter/Escape.
+   Основное событие - onkeyPress:
+
+   procedure TForm1.Edit1keyPress(..... var key: char)
+   begin
+   if not(key in ['0'..'9'; '-'; #8; ...] then
+     key := #0
+   end;
+
+   Игнорирование нажатой клавиши
+
+3. TButton
+   Свойство Caption - название кнопки.
+   Основное событие - onClick.
+
+4. TMemo
+   Многострочный редактор (поле вывода).
+   Можно вводить набор строк.
+   Основное свойство - Lines.
+   Данные - набор строк.
+   Вывод в Memo1 (в конец списка):
+   Memo1.Lines.Add(s), где type(s) = string (в данном случае процедура).
+   Это функция, возвращающая номер строки.
+   Доступ к i-той строке:
+   Memo1.Lines[i] - сокращенная форма (обращение к классу)
+   Полная форма - Memo1.Lines.Strings[i] - векторное свойство.
+
+
+Преобразование данных.
+Данные вводятся и выводятся только в строковом формате.
+
+1. Из строки в числовой формат.
+   F-ns:
+   k := strtoint(s)     type(k) -> integer
+   x := strtofloat(s)   type(x) -> real
+
+2. Из числового формата в строку.
+   s := inttostr(k)     type(k) -> integer
+   s := floattostr(x)   type(x) -> real
+
+Процедура str() - форматный перевод (функции удобнее).
+
+
+Процедуры и функции, реализующие диалоги.
+
+1. Вывод.
+   ShowMessage(<Выводимое сообщение>)
+   MessageDlg(1, 2, 3, 4):
+   1 - Выводимое сообщение
+   2 - Тип диалогового окна:
+     1)  mtWarning
+     2)  mtError
+     3)  mtInformation
+     4)  mtConfiguration
+     5)  mtCustom
+   3 - Множество кнопок, предоставляемых в диалоговом окне:
+     1)  mbYes
+     2)  mbNo
+     3)  mbOk
+     4)  mbCancel
+     5)  mbAbort
+     6)  mbretry
+     7)  mbIgnore
+     8)  mbAll
+     9)  mbHelp
+   4 - 0 (ноль) - для mbHelp - открывает справочную систему.
+
+   Результат MessageDlg -> какой кнопкой закрывать диалоговое окно:
+     1)  mbYes
+     2)  mrNo
+     3)  mrOk
+     4)  mrCancel
+     5)  mrAbort
+     6)  mrretry
+     7)  mrIgnore
+     8)  mrAll
+     9)  mrHelp
+     10) mrNone
+
+   Как процедура:
+   MessageDlg('Деление на ноль', mtError, [<кнопка>], 0)
+
+   Как функция:
+   if MessageDlg('Выводить промежуточные результаты?', [mbYes mbNo], 0) = mrYes then ... -- забыл какой mt :(
+
+
+2. Ввод.
+   Функция InPutBox(1, 2, 3):
+   1 - Заголовок диалогового окна
+   2 - Поясняющее сообщение
+   3 - Результат по умолчанию (или при нажатии Cancel) - строка
+
+   Ok - введенное значение
+   Cancel - то, что было по умолчанию
+
+   var n: integer;
+   begin
+   n := strtoint(InPutBox(<кол-во элементов массива>, 'Введите целое число', 10);
+   ...
+   end.
+   
+
+Модули.
+
+Unit <имя модуля>;
+Interface
+<интерфейсная часть>;
+Implementation
+<исполняемая часть модуля>
+[Begin
+ <инструкции>] - необязательные элементы
+End.
+
+Интерфейсная часть.
+Uses <имя модуля>; - использование доп. модулей (необязательно).
+Const <объявление констант>;
+Type <определение типов>;
+Var - теоритически можно, но не нужно.
+Заголовки процедур и функций, которые могут быть использованы в основной программе.
+Uses - подключение модуля (можно подключить один модуль к другому).
+
+Исполняемая часть. --- НЕДОСТУПНА ДЛЯ ОСНОВНОЙ ПРОГРАММЫ
+var <описание глобальных переменных>; -- используются для процедур и функций
+<описание процедур и функций>.
+
+
+Пример:
+
+
+Unit Massiv;
+
+Interface
+type
+  arr = array[1..50] of real;
+procedure input(var a: arr; n: integer);
+function max(a: arr; n: integer): real;
+function sredAr(a: arr; n: integer): real;
+
+Implementation
+
+procedure input(var a: arr; n: integer);
+var i: integer;
+begin
+  for i := 1 to n do
+    a[i] := random(100);
+end;
+
+function max(a: arr; n: integer): real;
+var i, maxi: integer;
+    m: real;
+begin
+  m := a[1];
+  for i := 2 to n do
+    if a[i] > m then begin
+      m := a[i];
+      maxi := i;
+    end;
+  max := m;
+end;
+
+function sum(a: arr; n: integer): real; --- недоступна, так как не описана в интерфейсной части, используется только как вспомогателная для sredAr.
+var i: integer;
+    s: real;
+begin
+  s := 0;
+  for i := 1 to n do begin
+    s := s + a[i];
+  end;
+  sum := s;
+end;
+
+function sredAr(a: arr; n: integer): real;
+var i: integer;
+begin
+  sredAr := sum(a, n) / n;
+end;
+
+
+
+
+program <имя>;
+uses Massiv;
+var a: arr; n: integer;
+begin
+...
+end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
