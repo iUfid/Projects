@@ -1,0 +1,158 @@
+Ссылочный тип
+Указатели
+
+Type <имя типа> = ^<базовый тип>
+PInt = ^integer; - определяет множество переменных, которые ссылаются на значения целого типа
+
+var p: PInt;
+	i: integer;
+
+begin
+	p := @i; - взятие адреса
+end;
+
+TPoint = ^integer;
+var
+	p: TPoint;
+	pp: ^TPoint - указатель на указатель
+
+nil - не указывает никуда
+
+Операции с указателями:
+1)
+	var f: boolean;
+		p1, p2: TPoint;
+	begin
+		f := p1 = p2; - True, если ссылаются на одно и то же место в памяти
+		if p1 = nil then ...
+	end;
+
+2)
+	Разыменование
+		p1^ - разыменование значения по адресу p1
+
+
+Type Stud = record
+	name: string[15];
+	year: integer;
+end;
+
+var
+	s: Stud;
+	ps: ^Stud;
+
+begin
+	ps^.name := 'Ivanov';
+	ps^.year := 2000;
+end;
+
+var
+	p1: ^integer;
+	p2: ^real;
+	p3: Pointer; - тип указателя, совместимый со всеми типами
+
+begin
+	p1 := p2; - error - указательи на разные типы данных
+
+	p3 := p2;
+	p1 := p3;
+
+
+Статические и динамические типы
+
+Создание и уничтожение динамических переменных:
+1. Выделение памяти - procedure New(var p: pointer); - типизированные указатели - можно указать тип указателя
+2. Освобождение памяти - procedure Dispose(p: pointer);
+3. GetMemo(p: pointer; size: integer); - нетипизированные указатели
+4. Освобождение для (3) - FreeMem(p: pointer; size: integer);
+
+
+Операции с матрицами:
+Unit Matrix;
+Interface
+Type
+	Arr = array[0..100] of real;
+	MArr = array[0..50] of Arr;
+	Ptr = ^Arr;
+	ArPtr = array[0..100] of Ptr;
+
+Procedure CreateDynM(var h: Pointer; m, n: integer);
+Procedure CreateDynM1(var h: Pointer; m, n: integer);
+Function MinElem(h: Pointer; m, n: integer): real;
+Function MaxElem(h: Pointer; m, n: integer): real;
+
+Implementation
+Procedure CreateDynM(var h: Pointer; m, n: integer);
+var i, j: integer;
+	a: ^ArrPtr;
+begin
+	New(a);
+	for i := 0 to m-1 do begin
+		New(a^[i]);
+		for j := 0 to n-1 do begin
+			a^[i]^[j] := random(100);
+		end;
+		h := a;
+	end;
+end;
+
+Procedure CreateDynM1(var h: Pointer; m, n: integer);
+var i, j: integer;
+	a: ^Real;
+begin
+	GetMem(a, Sizeof(Real) * m * n);
+	h := a;
+	for i := 0 to m-1 do begin
+		for j := 0 to n-1 do begin
+			a^ := random(100);
+			a := a + 1;
+		end;
+	end;
+
+Function MinElem(h: Pointer; m, n: integer): real;
+var i, j: integer;
+	min: real;
+	a: ^real;
+begin
+	a := h;
+	min := a^;
+	for i := 0 to m-1 do begin
+		for j := 0 to n-1 do begin
+			if a^ < min then
+				min := a^;
+			a := a + 1;
+		end;
+	end;
+	minElem := min;
+end;
+
+
+
+
+Динамические массивы:
+Type
+	DArr = array of real;
+Var
+	ard: DArr;
+	n: integer;
+begin
+	n := 10;
+	SetLength(ard, n);
+
+end;
+
+
+Low(<имя массива>);
+Higt(<имя массива>);
+
+Copy(<им массива>, <начальный индекс>, <кол-во элементов>);
+
+
+
+
+
+
+
+
+
+
