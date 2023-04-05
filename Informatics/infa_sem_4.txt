@@ -4,7 +4,7 @@ https://www.youtube.com/watch?v=47_LhSf-ago
 Для фриков
 
 Состоит из двух частей - информационная и адресная
-[data, ptr, start] -> [data. ptr] -> ... -> [data. ptr, end (nil_ptr)]
+[data, ptr, start] -> [data, ptr] -> ... -> [data, ptr, end (nil_ptr)]
 
 
 
