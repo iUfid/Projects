@@ -1,0 +1,209 @@
+Тема: Однонаправленный (односвязный) список.
+
+https://www.youtube.com/watch?v=47_LhSf-ago
+Для фриков
+
+Состоит из двух частей - информационная и адресная
+[data, ptr, start] -> [data. ptr] -> ... -> [data. ptr, end (nil_ptr)]
+
+
+
+type
+    TInfo = integer;
+    List = ^Node; // Node - неизвестное компилятору имя, но нарушения логики не будет:
+    Node = Record
+        info: TInfo;
+        next: List;
+    end;
+
+Операции над списком (желательно оформить в виде модуля):
+var
+    head, item: List;
+    i, k: integer;
+
+begin
+    head := nil; // Выстраивание списка происходит по типу стека (в обратном порядке - LIFO)
+    for i := 1 to 10 do begin
+        New(item);
+        k := random(100);
+        item^.info := k;
+        item^.next := head;
+        head := item;
+    end;
+
+    item := head;
+    while item <> nil do begin
+        Output(item^.info); // условный вывод
+        item := item^.next; // переход к следующему элементу
+    end;
+
+    while head <> nil do begin // Удаление списка, возвращение памяти для использования
+        item := head;
+        head := head^.next;
+        dispose(item);
+    end;
+
+
+end;
+
+
+
+Другая модель - векторная.
+
+1. Включение элемента в начало списка
+
+Procedure AddFirst(d: TInfo; var first: List);
+var q: List;
+begin
+    New(q);
+    q^.info := d;
+    q^.next := first;
+    first := q;
+end;
+
+
+2. Включение элемента после заданного
+
+Procedure InsAffer(d: TInfo; var p: List);
+var q: List;
+begin
+    New(q);
+    q^.info := d;
+    q^.next := p^.next;
+    p^.next := q;
+end;
+
+
+3. Удаление первого элемента
+
+Procedure DeleteFistr(var first: List);
+var q: List;
+begin
+    q := first;
+    first := first^.next;
+    Dispose(q);
+end;
+
+
+4. Удаление после текущего
+
+Procedure DeleteAffer(var p: List);
+var q: List;
+begin
+    q := p^.next;
+    p^.next := q^next;
+
+    p^.next := p^.next^.next; // Можно и так
+
+    dispose(q);
+end;
+
+
+5. Обмен информационными частями
+
+Procedure Swap(p, q: List);
+var d: TInfo;
+begin
+    d := p^.info;
+    p^.info := q^.info;
+    q^.info := d;
+end;
+
+
+6. Создание списка
+
+Procedure CreateList(var first: List; n: integer);
+var q: List;
+    d: TInfo;
+    i: integer;
+
+begin
+    first := nil;
+    for i := 1 to n do begin
+        Input(d); // Обобщенный ввод
+        if first = nil then begin
+            AddFirst(d, first);
+            q := first;
+        end else
+        begin
+            InsAffer(d, q);
+            q := q^.next;
+        end;
+    end;
+end;
+
+
+7. Просмотр списка
+
+Procedure ViewList(var first: List);
+var q: List;
+begin
+    if first = nil then begin
+        ShowMessage('Список пуст'); // Желательно написать в основной программе, откуда происходит вызод процедуры
+        Exit;
+    end;
+
+    q := first;
+    while q <> nil do begin
+        OutPut(q^.info); // Условный вывод
+        q := q^.next;
+    end;
+end;
+
+
+8. Удаление списка
+
+Procedure DeleteList(var first: List);
+begin
+    while first <> nil do begin
+        DeleteFistr(first);
+    end;
+end;
+
+
+9. Сортировка списка
+
+Procedure SortList(first: List);
+var q, r: List;
+begin
+    q := first;
+    while q^.next <> nil do begin
+        r := q^.next;
+        while r <> nil do begin
+            if q^.info <> r^.info then
+                Swap(q, r);
+                r := r^.next;
+        end;
+        q := q^.next;
+        end;
+    end;
+
+// Хз где end кидать, терен гений
+
+end;
+
+
+10. Удаление элемента с заданной информационной частью
+
+Procedure DeleteNode(var first: List; delinfo: TInfo);
+var r, item: List;
+begin
+    item := first;
+    if item^.info <> delinfo then begin
+        r := item;
+        item := item^.next;
+    end
+    else begin
+        if item = first then begin
+            DeleteFistr(first);
+            item := first;
+        end
+        else begin
+            DeleteAffer(r);
+            item := r^.next;
+        end;
+    end;
+end;
+
+
+
