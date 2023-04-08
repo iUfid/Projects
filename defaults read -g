@@ -1,0 +1,38 @@
+Guest@MacBook-Air-Ufid ~ % defaults read -g
+{
+    AKLastIDMSEnvironment = 0;
+    AppleAntiAliasingThreshold = 4;
+    AppleLanguages =     (
+        "ru-RU"
+    );
+    AppleLanguagesDidMigrate = "12.6";
+    AppleLanguagesSchemaVersion = 2000;
+    AppleLocale = "ru_RU";
+    AppleMiniaturizeOnDoubleClick = 0;
+    NSAutomaticCapitalizationEnabled = 1;
+    NSAutomaticPeriodSubstitutionEnabled = 1;
+    NSLinguisticDataAssetsRequestLastInterval = 86400;
+    NSLinguisticDataAssetsRequestTime = "2023-04-08 12:18:09 +0000";
+    NSLinguisticDataAssetsRequested =     (
+        ru,
+        en
+    );
+    NSLinguisticDataAssetsRequestedByChecker =     (
+    );
+    NSPreferredWebServices =     {
+        NSWebServicesProviderWebSearch =         {
+            NSDefaultDisplayName = Google;
+            NSProviderIdentifier = "com.google.www";
+        };
+    };
+    "com.apple.finder.SyncExtensions" =     {
+        collaborationMap =         {
+        };
+        dirMap =         {
+        };
+    };
+    "com.apple.sound.beep.flash" = 0;
+    "com.apple.springing.delay" = "0.5";
+    "com.apple.springing.enabled" = 1;
+    "com.apple.trackpad.forceClick" = 1;
+}
