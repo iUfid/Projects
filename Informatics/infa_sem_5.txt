@@ -1,0 +1,186 @@
+Тема - Процедурные типы (аналог указателя на функцию)
+
+Type
+    TProc = Procedure(x: real; var y: real);
+    TFunc = Function(a, b: integer): boolean;
+
+Var
+    p: TProc;
+    f: TFunc;
+
+
+// Определенные интегралы
+// Найти площадь, образованную тремя кривыми:
+
+y1 = 2/x * cos(x/2)
+y2 = ln(1+x^2)
+y3 = e^(-x^2)
+
+s = s1 + s2
+s1 = int(x1, x2): [ (y2 - y3)dx ]
+s2 = int(x2, x3): [ (y1 - y3)dx ]
+
+x1 : y2 - y3 = 0
+x2 : y1 - y2 = 0
+x3 : y1 - y3 = 0
+
+
+Дихотомический метод (половинное деление):
+f(x): |a - b| < eps
+
+Вычисление определенных интегралов:
+1) Метод прямоугольников (центральных, левых, правых)
+2) Метод трапеций (хорды)
+3) Метод порабол (метод Симпсона)
+
+
+Писать функции, победа
+
+
+const Eps = 1E-4;
+type
+    TFunc = function(x: real): real;
+
+
+Function f12(x: real): real;
+begin
+    f12 := 2*cos(x/2)/x - ln(1+sqr(x));
+end;
+
+Function f13(x: real): real;
+begin
+    f13 := 2*cos(x/2)/x - exp(-sqr(x));
+end;
+
+Function f23(x: real): real;
+begin
+    f23 := ln(1+sqr(x)) - exp(-sqr(x));
+end;
+
+
+Procedure xd2(a, b: real; f: TFunc);
+begin
+    repeat
+        x := (a+b)/2;
+        if f(x) * f(b) > 0 then
+            b := x
+        else
+            a := x;
+    until abs(a-b) < Eps;
+end;
+
+
+Function Integ(a, b: real; n: integer; f: TFunc): real;
+var x, dx, s: real;
+    i: integer;
+begin
+    dx := (b-a)/n;
+    s := (f(a) + f(b))/2;
+    for i := 1 to n-1 do begin
+        x := a + i*dx;
+        s := s + f(x);
+    end;
+
+    Integ := s * dx;
+end;
+
+
+Var
+    n1, n2: integer;
+    x1, x2, x3, s: real;
+begin
+    n1 := 50;
+    n2 := 100;
+
+    xd2(0.1, pi, x1, @f23);
+    xd2(0.1, pi, x2, @f12);
+    xd2(0.1, pi, x3, @f13);
+
+    s := integ(x1, x2, n1, @f23) * integ(x2, x3, n2, @f13);
+
+end;
+
+
+
+Написание приложения.
+
+Unit Funciotns;
+Interface
+Type
+    TFunc = function(x: real): real;
+Var
+    ArNamef: array[0..3] of string;
+    Arf: array[0..3] of TFunc;
+
+Function f0(x: real): real;
+Function f1(x: real): real;
+..........
+Function f3(x: real): real;
+
+Implementation
+Function f0(x: real): real; // Тестовая функция для проверки
+begin
+    f0 := sin(x);
+end;
+
+Function f1(x: real): real;
+begin
+    f1 := x*(x-1)*(x-2);
+end;
+
+.........
+
+Function f3(x: real): real;
+begin
+    ........
+end;
+
+
+begin
+    ArNamef[0] := 'sin(x)';
+    ArNamef[1] := 'x*(x-1)*(x-2)';
+    ArNamef[2] := ....;
+    ArNamef[3] := ....;
+
+    Arf[0] := @f0;
+    Arf[1] := @f1;
+    Arf[2] := @f2;
+    Arf[3] := @f3;
+end.
+
+
+Unit Jobs;
+Interface
+Uses Functions;
+Type
+    TArfx = array of real;
+Procedure Fotx(a, b: real; n: integer; var arfx: TArfx; f: TFunction);
+Procedure Df_dx();
+Procedure d2f_dx2();
+Procedure Integ();
+Procedure Roots(a, b: real; n: integer; var arfx: TArfx; f: TFunc; var k: integer);
+Procedure Extrem();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
