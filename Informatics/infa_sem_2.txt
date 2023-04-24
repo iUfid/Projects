@@ -188,7 +188,7 @@ end;
        sf := '';
        Memo1.Clear;
        Memo1.Modified := false;
-       Memo1.Align := alCloent;
+       Memo1.Align := alClient;
        Memo1.Font.Name := 'CourierNew';
        OpenDialog1.InitialDir := <имя каталога, которое будет открываться>;
        SaveDialog1.InitialDir := <имя каталога, которое будет открываться>;
