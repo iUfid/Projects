@@ -1,0 +1,138 @@
+Модули:
+Jobs
+
+
+Вторая производная:
+
+Procedure D2f_dx2(a, b: real; n: integer; var Arfx: TArfx; f: TFunc);
+var i: integer;
+    dx: real;
+    rfx: TArfx;
+begin
+    dx := (b - a) / n;
+    SetLength(rfx, n+1);
+    Df_dx(a, b, n, rfx, f);
+
+    Arfx[0] := (rfx[1] - rfx[0]) / dx;
+    for i := 1 to n-1 do begin
+        Arfx[i] := (rfx[i+1] - rfx[i-1]) / (2 * dx);
+    end;
+    Arfx[n] := (rfx[n] - rfx[n-1]) / dx;
+    SetLength(rfx, 0);
+
+end;
+
+
+Приближение корней:
+4 значения
+
+Экстремумы:
+5 значения
+
+
+1. TComboBox
+Разворонтая строка (жмак по треугольничку и все раскрылось)
+Свойства:
+Text - отвечает за "Edit" (заголовочная строка, представленная в свернутом состоянии)
+Items - аналог Lines из Memo (строки и методы для работы в развернутом состоянии)
+ItemIndex - индекс выделенной строки
+
+2. TRadioGroup
+Селекторные кнопки / Зависимые переключатели - состояние каждого завсит от состояния соседних
+Свойства:
+Caption - "Режим работы"
+Items - в инспекторе обхектов
+1) Функции
+2) Корни
+3) Экстремумы
+ItemIndex - индекс выделенного круглешка
+
+3. TCheckGroup
+Контейнер для независимых переключателей
+Caption - "Выбираемые параметры"
+Items
+1) F(x)
+2) F'(x)
+3) F''(x)
+4) Интеграл
+Индексов нет, используется векторное свойство Checked[№ переключателя] -> True если включен
+Может содержать от 1 до 5 колонок
+
+Аналог - TGroupBox - контейнер, можно размещать что угодно,
+там можно разместить 4 CheckBox
+
+
+1. Макет формы.
+См. фото
+2. Глаюыльные переменные - в интерфейсную часть
+var a, b: real;
+    n: integer;
+    Func: TFunc;
+
+3. Добавление колонки.
+Procedure AddCol(title: string; arfx: TArfx);
+var i: integer;
+    s: string;
+begin
+    With Form1.StringGrid1 do begin
+        ColCount := ColCount + 1;
+        Width := Width + 60;
+        Cells[ColCount-1,0] := Title;
+        for i := 0 to High(arfx) do begin
+            str(arfx[i]:7:3, s);
+            Cells[ColCount-1, i+1] := s;
+        end;
+    end;
+
+end;
+
+
+4. Обработчики событий.
+
+Procedure TForm1.FormCreate();
+var i: integer;
+begin
+    for i := 0 to High(ArNamef) do begin
+        ComboBox1.Items.Add(ArNamef[i]);
+    end;
+    ComboBox1.Text := ArNamef[0];
+    Func := Arf[0];
+
+end;
+
+
+Procedure TForm1.ComboBox1Select();
+begin
+    Func := Arf[ComboBox1.ItemIndex];
+    Form1.Caption := 'Исследование функции ' + ArNamef[ComboBox1.ItemIndex];
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
